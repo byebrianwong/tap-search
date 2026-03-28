@@ -111,28 +111,6 @@ body {
   flex-shrink: 0;
 }
 
-.word-delete {
-  appearance: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #ccc;
-  font-size: 18px;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  transition: background 120ms, color 120ms;
-  flex-shrink: 0;
-}
-
-.word-delete:hover {
-  background: #fee;
-  color: #d93025;
-}
-
 .word-expand {
   color: #bbb;
   font-size: 14px;
@@ -256,6 +234,71 @@ body {
   padding-left: 16px;
 }
 
+/* ── Card footer ── */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  color: #333;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+  font-family: inherit;
+}
+
+.card-btn:hover {
+  background: #f0f0f0;
+  border-color: #ccc;
+}
+
+.card-btn-google {
+  background: #e8f0fe;
+  border-color: #c5d8f8;
+  color: #1a73e8;
+}
+
+.card-btn-google:hover {
+  background: #d2e3fc;
+}
+
+.word-delete {
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 120ms, color 120ms;
+  font-family: inherit;
+}
+
+.word-delete:hover {
+  background: #fee;
+  color: #d93025;
+}
+
 /* ── Empty state ── */
 .empty-state {
   text-align: center;
@@ -318,9 +361,6 @@ body {
   .word-date { color: #666; }
   .word-expand { color: #666; }
 
-  .word-delete { color: #555; }
-  .word-delete:hover { background: #3e2020; color: #ef5350; }
-
   .word-card-body { border-top-color: #3c3c3c; }
 
   .ai-section { background: #1e2030; }
@@ -333,6 +373,14 @@ body {
   .def-item { color: #ccc; }
   .def-item::before { background: #666; }
   .def-example { color: #888; }
+
+  .card-footer { border-top-color: #3c3c3c; }
+  .card-btn { background: #3c3c3c; border-color: #555; color: #ddd; }
+  .card-btn:hover { background: #4a4a4a; border-color: #666; }
+  .card-btn-google { background: #1e3a5f; border-color: #2962ff55; color: #8ab4f8; }
+  .card-btn-google:hover { background: #264a7a; }
+  .word-delete { color: #555; }
+  .word-delete:hover { background: #3e2020; color: #ef5350; }
 
   .empty-icon { color: #444; }
   .empty-title { color: #888; }
