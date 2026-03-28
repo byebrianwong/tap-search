@@ -81,6 +81,47 @@ instant-search/
     icon128.png
 ```
 
+## Architecture notes (for agents / contributors)
+
+This is a Chrome Manifest V3 extension with no build step — all source files are plain JavaScript loaded directly by the browser.
+
+### Message flow
+
+1. `content/content.js` runs on every page. On double-click it extracts the selected word and sends a `{ type: 'INSTANT_SEARCH_LOOKUP', word }` message to the background service worker via `chrome.runtime.sendMessage`.
+2. `background/service-worker.js` receives the message, fires AI and dictionary lookups **in parallel** (`Promise.all`), and returns the combined result.
+3. The content script renders the result into a Shadow DOM tooltip (`<instant-search-tooltip>`) so styles are fully isolated from the host page.
+
+### Settings / storage
+
+User settings (provider choice, API keys, enabled state) are stored in `chrome.storage.sync` with these keys:
+
+| Key | Type | Default |
+| --- | --- | --- |
+| `provider` | `"gemini"` \| `"claude"` \| `"dictionary"` | `"dictionary"` |
+| `geminiApiKey` | string | `""` |
+| `claudeApiKey` | string | `""` |
+| `enabled` | boolean | `true` |
+
+The popup reads/writes settings via messages (`GET_SETTINGS` / `SAVE_SETTINGS`) to the service worker, which owns `chrome.storage`.
+
+### API details
+
+- **Gemini**: Tries models in order (`gemini-2.5-flash-lite` → `gemini-2.5-flash` → `gemini-2.0-flash`), falling through on 404 or 429 only. The API key is passed as a URL query parameter.
+- **Claude**: Uses `claude-haiku-4-5-20251001` with `max_tokens: 200`. Requires the `anthropic-dangerous-direct-browser-access` header for CORS from a browser extension.
+- **Dictionary**: Free Dictionary API (`api.dictionaryapi.dev`), no key required.
+
+### Key conventions
+
+- **No build step, no dependencies.** Everything is vanilla JS. No npm, no bundler.
+- **Shadow DOM isolation.** The tooltip uses a closed Shadow DOM so host-page CSS cannot leak in.
+- **Content script is an IIFE** to avoid polluting the page's global scope.
+- The tooltip custom element tag is `<instant-search-tooltip>`.
+- Word validation uses the regex `/^[\p{L}'-]+$/u` — letters, apostrophes, and hyphens only, 2–50 chars.
+
+### Making changes
+
+After editing any file, go to `chrome://extensions` and click the reload button on the Instant Search card (or press Ctrl+R on the extensions page). Content script changes require a page refresh on the target tab as well.
+
 ## License
 
 MIT
