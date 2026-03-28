@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="popup.css">
+  <title>Instant Search Settings</title>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Instant Search</h1>
+      <p class="subtitle">Double-click any word for instant answers</p>
+    </header>
+
+    <section class="section">
+      <label class="toggle-row">
+        <span class="toggle-label">Enabled</span>
+        <input type="checkbox" id="enabled" class="toggle">
+        <span class="toggle-slider"></span>
+      </label>
+    </section>
+
+    <section class="section">
+      <h2>AI Provider</h2>
+      <div class="provider-options">
+        <label class="provider-option">
+          <input type="radio" name="provider" value="gemini">
+          <span class="provider-card">
+            <span class="provider-icon gemini-icon">✦</span>
+            <span class="provider-name">Gemini</span>
+          </span>
+        </label>
+        <label class="provider-option">
+          <input type="radio" name="provider" value="claude">
+          <span class="provider-card">
+            <span class="provider-icon claude-icon">●</span>
+            <span class="provider-name">Claude</span>
+          </span>
+        </label>
+        <label class="provider-option">
+          <input type="radio" name="provider" value="dictionary">
+          <span class="provider-card">
+            <span class="provider-icon dict-icon">📖</span>
+            <span class="provider-name">Dictionary</span>
+          </span>
+        </label>
+      </div>
+    </section>
+
+    <section class="section api-section" id="gemini-section">
+      <h2>Gemini API Key</h2>
+      <div class="input-row">
+        <input type="password" id="gemini-key" placeholder="Enter your Gemini API key" autocomplete="off">
+        <button class="btn-show" id="gemini-toggle" title="Show/hide key">👁</button>
+      </div>
+      <a href="https://aistudio.google.com/apikey" target="_blank" class="help-link">Get a free API key →</a>
+    </section>
+
+    <section class="section api-section" id="claude-section">
+      <h2>Claude API Key</h2>
+      <div class="input-row">
+        <input type="password" id="claude-key" placeholder="Enter your Claude API key" autocomplete="off">
+        <button class="btn-show" id="claude-toggle" title="Show/hide key">👁</button>
+      </div>
+      <a href="https://console.anthropic.com/" target="_blank" class="help-link">Get an API key →</a>
+    </section>
+
+    <button id="save" class="btn-save">Save Settings</button>
+    <div id="status" class="status"></div>
+
+    <footer class="footer">
+      <span>v1.0.0</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
