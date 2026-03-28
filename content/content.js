@@ -726,8 +726,7 @@
       savedLink.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
-        const url = chrome.runtime.getURL('saved/saved.html');
-        window.open(url, '_blank', 'noopener');
+        chrome.runtime.sendMessage({ type: 'OPEN_SAVED_PAGE' });
       });
     }
   }

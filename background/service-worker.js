@@ -272,4 +272,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     getSavedWords().then((words) => sendResponse({ words }));
     return true;
   }
+
+  if (message.type === 'OPEN_SAVED_PAGE') {
+    chrome.tabs.create({ url: chrome.runtime.getURL('saved/saved.html') });
+    return false;
+  }
 });
