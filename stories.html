@@ -26,7 +26,6 @@
     height: 100vh;
     overflow: hidden;
   }
-  /* Sidebar */
   aside.sidebar {
     background: var(--sidebar-bg);
     border-right: 1px solid var(--border);
@@ -74,30 +73,15 @@
     border-left-color: var(--active);
     font-weight: 500;
   }
-  /* Main */
   main.canvas {
     overflow-y: auto;
     padding: 28px 32px 60px;
     background: var(--bg);
   }
-  .story-header {
-    margin-bottom: 18px;
-  }
-  .story-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0 0 4px;
-  }
-  .story-desc {
-    font-size: 13px;
-    color: var(--muted);
-    margin: 0;
-  }
-  .toolbar {
-    display: flex;
-    gap: 8px;
-    margin: 14px 0 18px;
-  }
+  .story-header { margin-bottom: 18px; }
+  .story-title { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  .story-desc { font-size: 13px; color: var(--muted); margin: 0; }
+  .toolbar { display: flex; gap: 8px; margin: 14px 0 18px; }
   .toolbar button {
     appearance: none;
     background: var(--panel);
@@ -124,10 +108,7 @@
     justify-content: center;
     overflow: auto;
   }
-  .stage.dark {
-    background: #202124;
-    border-color: #3c3c3c;
-  }
+  .stage.dark { background: #202124; border-color: #3c3c3c; }
   .stage.tooltip-stage {
     align-items: center;
     background-image:
@@ -148,13 +129,6 @@
     background-position: 0 0, 0 10px, 10px -10px, 10px 0;
     background-color: #1a1a1a;
   }
-  iframe.frame {
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-  iframe.frame.dark { background: #202124; }
   .meta {
     margin-top: 16px;
     font-size: 12px;
@@ -167,6 +141,160 @@
     border-radius: 4px;
     font-size: 11.5px;
   }
+  .frame-wrap {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .frame-wrap.dark { background: #1a1a1d; }
+
+  /* ──────────────── Popup styles (scoped) ──────────────── */
+  .popup-preview { width: 320px; background: #fff; color: #1a1a1a; font-size: 14px; }
+  .popup-preview, .popup-preview * { box-sizing: border-box; margin: 0; padding: 0; }
+  .popup-preview .container { padding: 20px; }
+  .popup-preview .header { margin-bottom: 20px; }
+  .popup-preview .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+  .popup-preview .subtitle { color: #666; font-size: 13px; }
+  .popup-preview .section { margin-bottom: 18px; }
+  .popup-preview .section h2 { font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 10px; }
+  .popup-preview .toggle-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 8px 0; }
+  .popup-preview .toggle-label { font-size: 15px; font-weight: 500; }
+  .popup-preview .toggle { display: none; }
+  .popup-preview .toggle-slider { position: relative; width: 44px; height: 24px; background: #ccc; border-radius: 12px; flex-shrink: 0; }
+  .popup-preview .toggle-slider::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform 200ms; }
+  .popup-preview .toggle:checked + .toggle-slider { background: #1a73e8; }
+  .popup-preview .toggle:checked + .toggle-slider::after { transform: translateX(20px); }
+  .popup-preview .provider-options { display: flex; gap: 8px; }
+  .popup-preview .provider-option { flex: 1; cursor: pointer; }
+  .popup-preview .provider-option input { display: none; }
+  .popup-preview .provider-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px; border: 2px solid #e0e0e0; border-radius: 10px; text-align: center; }
+  .popup-preview .provider-option input:checked + .provider-card { border-color: #1a73e8; background: #f0f6ff; }
+  .popup-preview .provider-icon { font-size: 22px; line-height: 1; }
+  .popup-preview .gemini-icon { color: #1a73e8; }
+  .popup-preview .claude-icon { color: #e65100; }
+  .popup-preview .dict-icon { font-size: 20px; }
+  .popup-preview .provider-name { font-size: 12px; font-weight: 600; color: #333; }
+  .popup-preview .api-section { display: none; }
+  .popup-preview .api-section.visible { display: block; }
+  .popup-preview .input-row { display: flex; gap: 6px; margin-bottom: 6px; }
+  .popup-preview .input-row input { flex: 1; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; }
+  .popup-preview .btn-show { appearance: none; background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; width: 36px; cursor: pointer; font-size: 14px; }
+  .popup-preview .help-link { font-size: 12px; color: #1a73e8; text-decoration: none; }
+  .popup-preview .btn-save { width: 100%; padding: 10px; background: #1a73e8; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .popup-preview .status { text-align: center; font-size: 13px; margin-top: 10px; min-height: 20px; color: #34a853; opacity: 0; transition: opacity 300ms; }
+  .popup-preview .status.show { opacity: 1; }
+  .popup-preview .btn-saved { display: block; text-align: center; padding: 10px; margin-top: 12px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 13px; font-weight: 500; color: #555; text-decoration: none; cursor: pointer; }
+  .popup-preview .footer { text-align: center; margin-top: 16px; padding-top: 12px; border-top: 1px solid #f0f0f0; color: #aaa; font-size: 12px; }
+
+  /* ──────────────── Saved-words styles (scoped) ──────────────── */
+  .saved-preview { width: 720px; background: #f8f9fa; color: #1a1a1a; font-size: 15px; line-height: 1.6; }
+  .saved-preview, .saved-preview * { box-sizing: border-box; margin: 0; padding: 0; }
+  .saved-preview .container { padding: 32px 24px; }
+  .saved-preview .header { margin-bottom: 24px; }
+  .saved-preview .header-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+  .saved-preview .header h1 { font-size: 28px; font-weight: 700; }
+  .saved-preview .count { font-size: 14px; color: #888; font-weight: 400; }
+  .saved-preview .search-row input { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 15px; font-family: inherit; outline: none; background: #fff; }
+  .saved-preview .word-list { display: flex; flex-direction: column; gap: 12px; }
+  .saved-preview .word-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden; }
+  .saved-preview .word-card-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; user-select: none; }
+  .saved-preview .word-title { font-size: 17px; font-weight: 600; flex: 1; min-width: 0; }
+  .saved-preview .word-phonetic { font-size: 13px; color: #888; font-weight: 400; flex-shrink: 0; }
+  .saved-preview .word-date { font-size: 12px; color: #aaa; flex-shrink: 0; }
+  .saved-preview .word-expand { color: #bbb; font-size: 14px; flex-shrink: 0; transition: transform 200ms; }
+  .saved-preview .word-card.expanded .word-expand { transform: rotate(180deg); }
+  .saved-preview .word-card-body { display: none; padding: 0 16px 16px; border-top: 1px solid #f0f0f0; }
+  .saved-preview .word-card.expanded .word-card-body { display: block; }
+  .saved-preview .ai-section { padding: 12px 14px; background: #f8f9ff; border-radius: 8px; margin-bottom: 12px; margin-top: 12px; }
+  .saved-preview .ai-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; margin-bottom: 6px; padding: 2px 8px; border-radius: 10px; }
+  .saved-preview .ai-label-gemini { background: #e8f0fe; color: #1a73e8; }
+  .saved-preview .ai-label-claude { background: #fff3e0; color: #e65100; }
+  .saved-preview .ai-summary { font-size: 14px; color: #333; line-height: 1.6; }
+  .saved-preview .dict-section { margin-top: 8px; }
+  .saved-preview .dict-label { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; }
+  .saved-preview .meaning { margin-bottom: 10px; }
+  .saved-preview .pos { display: inline-block; font-size: 11px; font-weight: 600; color: #1a73e8; background: #e8f0fe; border-radius: 4px; padding: 1px 7px; margin-bottom: 5px; }
+  .saved-preview .def-list { list-style: none; padding: 0; margin: 0; }
+  .saved-preview .def-item { position: relative; padding: 2px 0 2px 16px; font-size: 14px; color: #333; line-height: 1.5; }
+  .saved-preview .def-item::before { content: ''; position: absolute; left: 4px; top: 11px; width: 4px; height: 4px; border-radius: 50%; background: #ccc; }
+  .saved-preview .def-example { margin: 2px 0 0; color: #777; font-style: italic; font-size: 13px; padding-left: 16px; }
+  .saved-preview .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+  .saved-preview .card-actions { display: flex; gap: 8px; }
+  .saved-preview .card-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 7px; border: 1px solid #ddd; background: #fafafa; color: #333; font-size: 12.5px; font-weight: 500; text-decoration: none; cursor: pointer; font-family: inherit; }
+  .saved-preview .card-btn-google { background: #e8f0fe; border-color: #c5d8f8; color: #1a73e8; }
+  .saved-preview .word-delete { appearance: none; background: none; border: none; cursor: pointer; color: #bbb; font-size: 12px; padding: 4px 8px; border-radius: 4px; font-family: inherit; }
+  .saved-preview .empty-state { text-align: center; padding: 60px 20px; color: #999; }
+  .saved-preview .empty-icon { color: #ddd; margin-bottom: 16px; }
+  .saved-preview .empty-title { font-size: 18px; font-weight: 600; color: #666; margin-bottom: 6px; }
+  .saved-preview .empty-subtitle { font-size: 14px; color: #999; max-width: 340px; margin: 0 auto; }
+
+  /* ──────────────── Tooltip styles (scoped) ──────────────── */
+  .tap-search-tooltip {
+    all: initial;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    display: inline-block;
+  }
+  .tap-search-tooltip .is-tooltip { width: 380px; background: #ffffff; border: 1px solid #e2e2e2; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.14); overflow: hidden; color: #1a1a1a; font-size: 14px; line-height: 1.55; }
+  .tap-search-tooltip .is-header { display: flex; align-items: center; gap: 8px; padding: 12px 14px 10px; border-bottom: 1px solid #f0f0f0; }
+  .tap-search-tooltip .is-word { font-size: 18px; font-weight: 600; color: #1a1a1a; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tap-search-tooltip .is-phonetic { font-size: 13px; color: #888; font-weight: 400; flex-shrink: 0; }
+  .tap-search-tooltip .is-close { appearance: none; background: none; border: none; cursor: pointer; font-size: 20px; color: #999; padding: 0; line-height: 1; flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+  .tap-search-tooltip .is-save { appearance: none; background: none; border: none; cursor: pointer; color: #999; padding: 0; line-height: 1; flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+  .tap-search-tooltip .is-save svg { width: 16px; height: 16px; }
+  .tap-search-tooltip .is-save.is-saved { color: #e8a000; }
+  .tap-search-tooltip .is-body { padding: 0; max-height: 320px; overflow-y: auto; }
+  .tap-search-tooltip .is-ai-section { padding: 10px 14px; background: #f8f9ff; border-bottom: 1px solid #e8e8f0; }
+  .tap-search-tooltip .is-ai-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; margin-bottom: 6px; padding: 2px 8px; border-radius: 10px; }
+  .tap-search-tooltip .is-ai-label-gemini { background: #e8f0fe; color: #1a73e8; }
+  .tap-search-tooltip .is-ai-label-claude { background: #fff3e0; color: #e65100; }
+  .tap-search-tooltip .is-ai-summary { margin: 0; color: #333; font-size: 13px; line-height: 1.6; }
+  .tap-search-tooltip .is-dict-section { padding: 10px 14px; }
+  .tap-search-tooltip .is-dict-label { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; }
+  .tap-search-tooltip .is-meaning { margin-bottom: 10px; }
+  .tap-search-tooltip .is-pos { display: inline-block; font-size: 11px; font-weight: 600; color: #1a73e8; background: #e8f0fe; border-radius: 4px; padding: 1px 7px; margin-bottom: 5px; }
+  .tap-search-tooltip .is-def-list { list-style: none; padding: 0; margin: 0; }
+  .tap-search-tooltip .is-def-item { position: relative; padding: 2px 0 2px 16px; font-size: 13px; color: #333; line-height: 1.5; }
+  .tap-search-tooltip .is-def-item::before { content: ''; position: absolute; left: 4px; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: #ccc; }
+  .tap-search-tooltip .is-def-example { margin: 2px 0 0; color: #777; font-style: italic; font-size: 12px; padding-left: 16px; }
+  .tap-search-tooltip .is-no-result { padding: 14px; color: #999; font-size: 13px; text-align: center; }
+  .tap-search-tooltip .is-hint { padding: 8px 14px; color: #aaa; font-size: 11.5px; border-top: 1px solid #f0f0f0; }
+  .tap-search-tooltip .is-ai-error { padding: 8px 14px; background: #fef7e0; border-bottom: 1px solid #f0e0b0; font-size: 12px; color: #b36b00; word-break: break-word; }
+  .tap-search-tooltip .is-loading { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
+  .tap-search-tooltip .is-shimmer { height: 12px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; border-radius: 6px; animation: ts-shimmer 1.2s ease-in-out infinite; }
+  .tap-search-tooltip .is-shimmer:nth-child(2) { width: 85%; }
+  .tap-search-tooltip .is-shimmer:nth-child(3) { width: 70%; }
+  .tap-search-tooltip .is-shimmer:nth-child(4) { width: 55%; }
+  @keyframes ts-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .tap-search-tooltip .is-actions { display: flex; gap: 8px; padding: 8px 14px 12px; border-top: 1px solid #f0f0f0; }
+  .tap-search-tooltip .is-btn { appearance: none; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 10px; border-radius: 8px; border: 1px solid #ddd; background: #fafafa; color: #333; font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .tap-search-tooltip .is-btn-google { background: #e8f0fe; border-color: #c5d8f8; color: #1a73e8; }
+  .tap-search-tooltip .is-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .tap-search-tooltip .is-saved-link { display: block; text-align: center; padding: 6px 14px 10px; font-size: 12px; color: #888; cursor: pointer; text-decoration: none; }
+
+  /* Tooltip dark mode (forced via .dark) */
+  .tap-search-tooltip.dark .is-tooltip { background: #292a2d; border-color: #3c3c3c; color: #e0e0e0; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+  .tap-search-tooltip.dark .is-header { border-bottom-color: #3c3c3c; }
+  .tap-search-tooltip.dark .is-word { color: #e8eaed; }
+  .tap-search-tooltip.dark .is-close, .tap-search-tooltip.dark .is-save { color: #888; }
+  .tap-search-tooltip.dark .is-ai-section { background: #1e2030; border-bottom-color: #3c3c3c; }
+  .tap-search-tooltip.dark .is-ai-label-gemini { background: #1e3a5f; color: #8ab4f8; }
+  .tap-search-tooltip.dark .is-ai-label-claude { background: #3e2723; color: #ffab91; }
+  .tap-search-tooltip.dark .is-ai-summary { color: #ccc; }
+  .tap-search-tooltip.dark .is-dict-label { color: #777; }
+  .tap-search-tooltip.dark .is-pos { background: #1e3a5f; color: #8ab4f8; }
+  .tap-search-tooltip.dark .is-def-item { color: #ccc; }
+  .tap-search-tooltip.dark .is-def-item::before { background: #666; }
+  .tap-search-tooltip.dark .is-def-example { color: #888; }
+  .tap-search-tooltip.dark .is-no-result { color: #777; }
+  .tap-search-tooltip.dark .is-hint { color: #666; border-top-color: #3c3c3c; }
+  .tap-search-tooltip.dark .is-ai-error { background: #3e2723; border-bottom-color: #5d4037; color: #ffab91; }
+  .tap-search-tooltip.dark .is-shimmer { background: linear-gradient(90deg, #3c3c3c 25%, #4a4a4a 50%, #3c3c3c 75%); background-size: 200% 100%; }
+  .tap-search-tooltip.dark .is-actions { border-top-color: #3c3c3c; }
+  .tap-search-tooltip.dark .is-btn { background: #3c3c3c; border-color: #555; color: #ddd; }
+  .tap-search-tooltip.dark .is-btn-google { background: #1e3a5f; border-color: #2962ff55; color: #8ab4f8; }
+  .tap-search-tooltip.dark .is-saved-link { color: #666; }
 </style>
 </head>
 <body>
@@ -219,33 +347,24 @@
   <div class="meta" id="meta"></div>
 </main>
 
-<!-- ─────────────── Mock data + builders ─────────────── -->
 <script>
-// ── Sample fixtures ──────────────────────────────────────────────────────────
+// ── Fixtures ─────────────────────────────────────────────────────────────────
 
 const FIX = {
   word: 'serendipity',
   phonetic: '/ˌsɛrənˈdɪpɪti/',
-  ai_gemini: {
-    source: 'gemini',
-    summary: 'Serendipity is the unplanned, fortunate discovery of something valuable while looking for something else — like stumbling on a great cafe while lost on a side street.'
-  },
-  ai_claude: {
-    source: 'claude',
-    summary: 'A pleasant surprise — the experience of finding good things by chance. Often used to describe lucky discoveries in science, art, and everyday life.'
-  },
+  ai_gemini: { source: 'gemini', summary: 'Serendipity is the unplanned, fortunate discovery of something valuable while looking for something else — like stumbling on a great cafe while lost on a side street.' },
+  ai_claude: { source: 'claude', summary: 'A pleasant surprise — the experience of finding good things by chance. Often used to describe lucky discoveries in science, art, and everyday life.' },
   dict: {
     phonetic: '/ˌsɛrənˈdɪpɪti/',
-    meanings: [
-      {
-        partOfSpeech: 'noun',
-        definitions: [
-          { definition: 'The occurrence and development of events by chance in a happy or beneficial way.',
-            example: 'A fortunate stroke of serendipity brought the two old friends together.' },
-          { definition: 'A pleasant surprise; finding something good without looking for it.' }
-        ]
-      }
-    ]
+    meanings: [{
+      partOfSpeech: 'noun',
+      definitions: [
+        { definition: 'The occurrence and development of events by chance in a happy or beneficial way.',
+          example: 'A fortunate stroke of serendipity brought the two old friends together.' },
+        { definition: 'A pleasant surprise; finding something good without looking for it.' }
+      ]
+    }]
   },
   longDict: {
     phonetic: '/ˌsɛrənˈdɪpɪti/',
@@ -266,42 +385,18 @@ const FIX = {
 };
 
 const SAVED_FIXTURES = [
-  {
-    text: 'serendipity',
-    savedAt: Date.now() - 1000 * 60 * 60 * 2,
-    ai: FIX.ai_gemini,
-    dictionary: FIX.dict
-  },
-  {
-    text: 'ephemeral',
-    savedAt: Date.now() - 1000 * 60 * 60 * 24,
-    ai: FIX.ai_claude,
-    dictionary: {
-      phonetic: '/əˈfɛm(ə)rəl/',
-      meanings: [{ partOfSpeech: 'adjective', definitions: [
-        { definition: 'Lasting for a very short time.', example: 'Fashions are ephemeral.' }
-      ]}]
-    }
-  },
-  {
-    text: 'limerence',
-    savedAt: Date.now() - 1000 * 60 * 60 * 24 * 5,
-    ai: null,
-    dictionary: {
-      meanings: [{ partOfSpeech: 'noun', definitions: [
-        { definition: 'The state of being romantically infatuated, including obsessive thoughts and a longing for reciprocation.' }
-      ]}]
-    }
-  }
+  { text: 'serendipity', savedAt: Date.now() - 1000*60*60*2,  ai: FIX.ai_gemini, dictionary: FIX.dict },
+  { text: 'ephemeral',   savedAt: Date.now() - 1000*60*60*24, ai: FIX.ai_claude,
+    dictionary: { phonetic: '/əˈfɛm(ə)rəl/', meanings: [{ partOfSpeech: 'adjective', definitions: [
+      { definition: 'Lasting for a very short time.', example: 'Fashions are ephemeral.' }
+    ]}]}},
+  { text: 'limerence',   savedAt: Date.now() - 1000*60*60*24*5, ai: null,
+    dictionary: { meanings: [{ partOfSpeech: 'noun', definitions: [
+      { definition: 'The state of being romantically infatuated, including obsessive thoughts and a longing for reciprocation.' }
+    ]}]}}
 ];
 
-// ── Tooltip builders (lifted from content.js) ────────────────────────────────
-
-const TOOLTIP_WIDTH = 380;
-const ICON_BOOKMARK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-const ICON_BOOKMARK_FILLED = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
-const ICON_WIKI = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`;
-const ICON_GOOGLE = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>`;
+// ── Helpers ──────────────────────────────────────────────────────────────────
 
 function esc(str) {
   const div = document.createElement('div');
@@ -309,15 +404,205 @@ function esc(str) {
   return div.innerHTML;
 }
 
+function formatDate(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+const ICON_BOOKMARK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+const ICON_BOOKMARK_FILLED = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+const ICON_WIKI = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`;
+const ICON_GOOGLE = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>`;
+
+// ── Popup builder ────────────────────────────────────────────────────────────
+
+function buildPopup(s) {
+  const enabledChecked = s.enabled !== false ? 'checked' : '';
+  const provDict   = s.provider === 'dictionary' ? 'checked' : '';
+  const provGemini = s.provider === 'gemini'     ? 'checked' : '';
+  const provClaude = s.provider === 'claude'     ? 'checked' : '';
+  const geminiVisible = s.provider === 'gemini' ? ' visible' : '';
+  const claudeVisible = s.provider === 'claude' ? ' visible' : '';
+  const toast = s.toast
+    ? `<div class="status show" style="color:${s.toast.color}">${esc(s.toast.text)}</div>`
+    : `<div class="status"></div>`;
+
+  return `
+    <div class="popup-preview">
+      <div class="container">
+        <header class="header">
+          <h1>Tap Search</h1>
+          <p class="subtitle">Double-click any word for instant answers</p>
+        </header>
+
+        <section class="section">
+          <label class="toggle-row">
+            <span class="toggle-label">Enabled</span>
+            <input type="checkbox" class="toggle" ${enabledChecked}>
+            <span class="toggle-slider"></span>
+          </label>
+        </section>
+
+        <section class="section">
+          <h2>AI Provider</h2>
+          <div class="provider-options">
+            <label class="provider-option">
+              <input type="radio" name="provider" value="gemini" ${provGemini}>
+              <span class="provider-card">
+                <span class="provider-icon gemini-icon">✦</span>
+                <span class="provider-name">Gemini</span>
+              </span>
+            </label>
+            <label class="provider-option">
+              <input type="radio" name="provider" value="claude" ${provClaude}>
+              <span class="provider-card">
+                <span class="provider-icon claude-icon">●</span>
+                <span class="provider-name">Claude</span>
+              </span>
+            </label>
+            <label class="provider-option">
+              <input type="radio" name="provider" value="dictionary" ${provDict}>
+              <span class="provider-card">
+                <span class="provider-icon dict-icon">📖</span>
+                <span class="provider-name">Dictionary</span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="section api-section${geminiVisible}">
+          <h2>Gemini API Key</h2>
+          <div class="input-row">
+            <input type="password" placeholder="Enter your Gemini API key" value="${esc(s.geminiApiKey || '')}">
+            <button class="btn-show" title="Show/hide key">👁</button>
+          </div>
+          <a href="#" class="help-link">Get a free API key →</a>
+        </section>
+
+        <section class="section api-section${claudeVisible}">
+          <h2>Claude API Key</h2>
+          <div class="input-row">
+            <input type="password" placeholder="Enter your Claude API key" value="${esc(s.claudeApiKey || '')}">
+            <button class="btn-show" title="Show/hide key">👁</button>
+          </div>
+          <a href="#" class="help-link">Get an API key →</a>
+        </section>
+
+        <button class="btn-save">Save Settings</button>
+        ${toast}
+
+        <a href="#" class="btn-saved">View Saved Words</a>
+
+        <footer class="footer"><span>v1.0.0</span></footer>
+      </div>
+    </div>
+  `;
+}
+
+// ── Saved-words builder ──────────────────────────────────────────────────────
+
+function buildSavedAi(ai) {
+  if (!ai) return '';
+  const labelClass = ai.source === 'gemini' ? 'ai-label-gemini' : 'ai-label-claude';
+  const labelText  = ai.source === 'gemini' ? '✦ Gemini' : '● Claude';
+  return `<div class="ai-section"><div class="ai-label ${labelClass}">${labelText}</div><p class="ai-summary">${esc(ai.summary)}</p></div>`;
+}
+
+function buildSavedDict(dict, hasAi) {
+  if (!dict || !dict.meanings || !dict.meanings.length) return '';
+  let html = '';
+  for (const m of dict.meanings) {
+    let defs = '';
+    for (const d of m.definitions) {
+      defs += `<li class="def-item">${esc(d.definition)}</li>`;
+      if (d.example) defs += `<p class="def-example">"${esc(d.example)}"</p>`;
+    }
+    html += `<div class="meaning"><span class="pos">${esc(m.partOfSpeech)}</span><ol class="def-list">${defs}</ol></div>`;
+  }
+  return `<div class="dict-section">${hasAi ? '<div class="dict-label">Definitions</div>' : ''}${html}</div>`;
+}
+
+function buildSavedCard(entry, expanded) {
+  const phonetic = entry.dictionary?.phonetic ? `<span class="word-phonetic">${esc(entry.dictionary.phonetic)}</span>` : '';
+  const body = buildSavedAi(entry.ai) + buildSavedDict(entry.dictionary, !!entry.ai);
+  const q = encodeURIComponent(entry.text);
+  return `
+    <div class="word-card${expanded ? ' expanded' : ''}">
+      <div class="word-card-header">
+        <span class="word-title">${esc(entry.text)}</span>
+        ${phonetic}
+        <span class="word-date">${formatDate(entry.savedAt)}</span>
+        <span class="word-expand">▼</span>
+      </div>
+      <div class="word-card-body">
+        ${body || '<p style="color:#999;font-size:14px;">No summary or definitions saved.</p>'}
+        <div class="card-footer">
+          <div class="card-actions">
+            <a class="card-btn" href="https://en.wikipedia.org/wiki/Special:Search?search=${q}" target="_blank">Wikipedia</a>
+            <a class="card-btn card-btn-google" href="https://www.google.com/search?q=${q}" target="_blank">Google</a>
+          </div>
+          <button class="word-delete">Remove</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildSavedPage({ words = [], expand, search }) {
+  const filtered = search
+    ? words.filter((w) => w.text.toLowerCase().includes(search.toLowerCase()))
+    : words;
+
+  const countText = words.length ? `${words.length} word${words.length !== 1 ? 's' : ''}` : '';
+  const searchVal = search || '';
+
+  let body = '';
+  if (words.length === 0) {
+    body = `
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="48" height="48"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <p class="empty-title">No saved words yet</p>
+        <p class="empty-subtitle">Double-click any word on a webpage and click the bookmark icon to save it here.</p>
+      </div>
+    `;
+  } else if (filtered.length === 0) {
+    body = `
+      <div class="empty-state">
+        <p class="empty-title">No matches</p>
+        <p class="empty-subtitle">Try a different search term.</p>
+      </div>
+    `;
+  } else {
+    body = `<div class="word-list">${filtered.map((w) => buildSavedCard(w, w.text === expand)).join('')}</div>`;
+  }
+
+  return `
+    <div class="saved-preview">
+      <div class="container">
+        <header class="header">
+          <div class="header-top">
+            <h1>Saved Words</h1>
+            <span class="count">${countText}</span>
+          </div>
+          <div class="search-row">
+            <input type="text" placeholder="Search saved words..." value="${esc(searchVal)}">
+          </div>
+        </header>
+        ${body}
+      </div>
+    </div>
+  `;
+}
+
+// ── Tooltip builders (lifted from content.js) ────────────────────────────────
+
 function buildActionButtons(word) {
   const q = encodeURIComponent(word);
   return `
-    <button class="is-btn is-btn-wiki" data-url="https://en.wikipedia.org/wiki/Special:Search?search=${q}">
-      ${ICON_WIKI} Wikipedia
-    </button>
-    <button class="is-btn is-btn-google" data-url="https://www.google.com/search?q=${q}">
-      ${ICON_GOOGLE} Google Search
-    </button>
+    <button class="is-btn is-btn-wiki" data-url="https://en.wikipedia.org/wiki/Special:Search?search=${q}">${ICON_WIKI} Wikipedia</button>
+    <button class="is-btn is-btn-google" data-url="https://www.google.com/search?q=${q}">${ICON_GOOGLE} Google Search</button>
   `;
 }
 
@@ -364,39 +649,29 @@ function buildResult(word, result, opts = {}) {
   let aiHtml = '';
   if (ai) {
     const labelClass = ai.source === 'gemini' ? 'is-ai-label-gemini' : 'is-ai-label-claude';
-    const labelText = ai.source === 'gemini' ? '✦ Gemini' : '● Claude';
-    aiHtml = `
-      <div class="is-ai-section">
-        <div class="is-ai-label ${labelClass}">${labelText}</div>
-        <p class="is-ai-summary">${esc(ai.summary)}</p>
-      </div>
-    `;
+    const labelText  = ai.source === 'gemini' ? '✦ Gemini' : '● Claude';
+    aiHtml = `<div class="is-ai-section"><div class="is-ai-label ${labelClass}">${labelText}</div><p class="is-ai-summary">${esc(ai.summary)}</p></div>`;
   } else if (result.aiError) {
     aiHtml = `<div class="is-ai-error">AI error: ${esc(result.aiError)}</div>`;
   }
 
   let dictHtml = '';
-  if (dict && dict.meanings && dict.meanings.length > 0) {
-    let meaningsHtml = '';
+  if (dict && dict.meanings && dict.meanings.length) {
+    let m = '';
     for (const meaning of dict.meanings) {
-      let defsHtml = '';
-      for (const def of meaning.definitions) {
-        defsHtml += `<li class="is-def-item">${esc(def.definition)}</li>`;
-        if (def.example) defsHtml += `<p class="is-def-example">"${esc(def.example)}"</p>`;
+      let defs = '';
+      for (const d of meaning.definitions) {
+        defs += `<li class="is-def-item">${esc(d.definition)}</li>`;
+        if (d.example) defs += `<p class="is-def-example">"${esc(d.example)}"</p>`;
       }
-      meaningsHtml += `
-        <div class="is-meaning">
-          <span class="is-pos">${esc(meaning.partOfSpeech)}</span>
-          <ol class="is-def-list">${defsHtml}</ol>
-        </div>
-      `;
+      m += `<div class="is-meaning"><span class="is-pos">${esc(meaning.partOfSpeech)}</span><ol class="is-def-list">${defs}</ol></div>`;
     }
-    dictHtml = `<div class="is-dict-section">${ai ? '<div class="is-dict-label">Definitions</div>' : ''}${meaningsHtml}</div>`;
+    dictHtml = `<div class="is-dict-section">${ai ? '<div class="is-dict-label">Definitions</div>' : ''}${m}</div>`;
   }
 
-  const hintHtml = (!ai && dict) ? `<div class="is-hint">Add an AI key in extension settings for richer summaries.</div>` : '';
+  const hint = (!ai && dict) ? `<div class="is-hint">Add an AI key in extension settings for richer summaries.</div>` : '';
   const savedClass = opts.saved ? ' is-saved' : '';
-  const savedIcon = opts.saved ? ICON_BOOKMARK_FILLED : ICON_BOOKMARK;
+  const savedIcon  = opts.saved ? ICON_BOOKMARK_FILLED : ICON_BOOKMARK;
 
   return `
     <div class="is-tooltip">
@@ -411,150 +686,9 @@ function buildResult(word, result, opts = {}) {
         ${dictHtml}
         ${!aiHtml && !dictHtml ? '<div class="is-no-result">No results found.</div>' : ''}
       </div>
-      ${hintHtml}
+      ${hint}
       <div class="is-actions">${buildActionButtons(word)}</div>
       <a class="is-saved-link">View saved words</a>
-    </div>
-  `;
-}
-
-// Tooltip CSS pulled from content.js (with :host swapped for .tap-search-tooltip wrapper)
-const TOOLTIP_STYLES = `
-  .tap-search-tooltip {
-    all: initial;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    display: inline-block;
-  }
-  .tap-search-tooltip .is-tooltip {
-    width: ${TOOLTIP_WIDTH}px;
-    background: #ffffff;
-    border: 1px solid #e2e2e2;
-    border-radius: 12px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.14);
-    overflow: hidden;
-    color: #1a1a1a;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-  .tap-search-tooltip .is-header { display: flex; align-items: center; gap: 8px; padding: 12px 14px 10px; border-bottom: 1px solid #f0f0f0; }
-  .tap-search-tooltip .is-word { font-size: 18px; font-weight: 600; color: #1a1a1a; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .tap-search-tooltip .is-phonetic { font-size: 13px; color: #888; font-weight: 400; flex-shrink: 0; }
-  .tap-search-tooltip .is-close { appearance: none; background: none; border: none; cursor: pointer; font-size: 20px; color: #999; padding: 0; line-height: 1; flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
-  .tap-search-tooltip .is-close:hover { background: #f1f3f4; color: #333; }
-  .tap-search-tooltip .is-save { appearance: none; background: none; border: none; cursor: pointer; color: #999; padding: 0; line-height: 1; flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
-  .tap-search-tooltip .is-save svg { width: 16px; height: 16px; }
-  .tap-search-tooltip .is-save:hover { background: #f1f3f4; color: #e8a000; }
-  .tap-search-tooltip .is-save.is-saved { color: #e8a000; }
-  .tap-search-tooltip .is-body { padding: 0; max-height: 320px; overflow-y: auto; }
-  .tap-search-tooltip .is-ai-section { padding: 10px 14px; background: #f8f9ff; border-bottom: 1px solid #e8e8f0; }
-  .tap-search-tooltip .is-ai-label { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; margin-bottom: 6px; padding: 2px 8px; border-radius: 10px; }
-  .tap-search-tooltip .is-ai-label-gemini { background: #e8f0fe; color: #1a73e8; }
-  .tap-search-tooltip .is-ai-label-claude { background: #fff3e0; color: #e65100; }
-  .tap-search-tooltip .is-ai-summary { margin: 0; color: #333; font-size: 13px; line-height: 1.6; }
-  .tap-search-tooltip .is-dict-section { padding: 10px 14px; }
-  .tap-search-tooltip .is-dict-label { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px; }
-  .tap-search-tooltip .is-meaning { margin-bottom: 10px; }
-  .tap-search-tooltip .is-meaning:last-child { margin-bottom: 0; }
-  .tap-search-tooltip .is-pos { display: inline-block; font-size: 11px; font-weight: 600; color: #1a73e8; background: #e8f0fe; border-radius: 4px; padding: 1px 7px; margin-bottom: 5px; }
-  .tap-search-tooltip .is-def-list { list-style: none; padding: 0; margin: 0; }
-  .tap-search-tooltip .is-def-item { position: relative; padding: 2px 0 2px 16px; font-size: 13px; color: #333; line-height: 1.5; }
-  .tap-search-tooltip .is-def-item::before { content: ''; position: absolute; left: 4px; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: #ccc; }
-  .tap-search-tooltip .is-def-example { margin: 2px 0 0; color: #777; font-style: italic; font-size: 12px; padding-left: 16px; }
-  .tap-search-tooltip .is-no-result { padding: 14px; color: #999; font-size: 13px; text-align: center; }
-  .tap-search-tooltip .is-hint { padding: 8px 14px; color: #aaa; font-size: 11.5px; border-top: 1px solid #f0f0f0; }
-  .tap-search-tooltip .is-ai-error { padding: 8px 14px; background: #fef7e0; border-bottom: 1px solid #f0e0b0; font-size: 12px; color: #b36b00; word-break: break-word; }
-  .tap-search-tooltip .is-loading { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
-  .tap-search-tooltip .is-shimmer { height: 12px; background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; border-radius: 6px; animation: ts-shimmer 1.2s ease-in-out infinite; }
-  .tap-search-tooltip .is-shimmer:nth-child(2) { width: 85%; }
-  .tap-search-tooltip .is-shimmer:nth-child(3) { width: 70%; }
-  .tap-search-tooltip .is-shimmer:nth-child(4) { width: 55%; }
-  @keyframes ts-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-  .tap-search-tooltip .is-actions { display: flex; gap: 8px; padding: 8px 14px 12px; border-top: 1px solid #f0f0f0; }
-  .tap-search-tooltip .is-btn { appearance: none; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 10px; border-radius: 8px; border: 1px solid #ddd; background: #fafafa; color: #333; font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: inherit; white-space: nowrap; }
-  .tap-search-tooltip .is-btn-google { background: #e8f0fe; border-color: #c5d8f8; color: #1a73e8; }
-  .tap-search-tooltip .is-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-  .tap-search-tooltip .is-saved-link { display: block; text-align: center; padding: 6px 14px 10px; font-size: 12px; color: #888; cursor: pointer; text-decoration: none; }
-
-  /* Dark mode forced via class — not media query, so we can preview both */
-  .tap-search-tooltip.dark .is-tooltip { background: #292a2d; border-color: #3c3c3c; color: #e0e0e0; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4); }
-  .tap-search-tooltip.dark .is-header { border-bottom-color: #3c3c3c; }
-  .tap-search-tooltip.dark .is-word { color: #e8eaed; }
-  .tap-search-tooltip.dark .is-close { color: #888; }
-  .tap-search-tooltip.dark .is-save { color: #888; }
-  .tap-search-tooltip.dark .is-ai-section { background: #1e2030; border-bottom-color: #3c3c3c; }
-  .tap-search-tooltip.dark .is-ai-label-gemini { background: #1e3a5f; color: #8ab4f8; }
-  .tap-search-tooltip.dark .is-ai-label-claude { background: #3e2723; color: #ffab91; }
-  .tap-search-tooltip.dark .is-ai-summary { color: #ccc; }
-  .tap-search-tooltip.dark .is-dict-label { color: #777; }
-  .tap-search-tooltip.dark .is-pos { background: #1e3a5f; color: #8ab4f8; }
-  .tap-search-tooltip.dark .is-def-item { color: #ccc; }
-  .tap-search-tooltip.dark .is-def-item::before { background: #666; }
-  .tap-search-tooltip.dark .is-def-example { color: #888; }
-  .tap-search-tooltip.dark .is-no-result { color: #777; }
-  .tap-search-tooltip.dark .is-hint { color: #666; border-top-color: #3c3c3c; }
-  .tap-search-tooltip.dark .is-ai-error { background: #3e2723; border-bottom-color: #5d4037; color: #ffab91; }
-  .tap-search-tooltip.dark .is-shimmer { background: linear-gradient(90deg, #3c3c3c 25%, #4a4a4a 50%, #3c3c3c 75%); background-size: 200% 100%; }
-  .tap-search-tooltip.dark .is-actions { border-top-color: #3c3c3c; }
-  .tap-search-tooltip.dark .is-btn { background: #3c3c3c; border-color: #555; color: #ddd; }
-  .tap-search-tooltip.dark .is-btn-google { background: #1e3a5f; border-color: #2962ff55; color: #8ab4f8; }
-  .tap-search-tooltip.dark .is-saved-link { color: #666; }
-`;
-
-// Inject tooltip styles into document head
-const styleEl = document.createElement('style');
-styleEl.textContent = TOOLTIP_STYLES;
-document.head.appendChild(styleEl);
-
-// ── Saved words card builder (lifted from saved.js) ───────────────────────────
-
-function formatDate(ts) {
-  const d = new Date(ts);
-  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function buildSavedAiHtml(ai) {
-  if (!ai) return '';
-  const labelClass = ai.source === 'gemini' ? 'ai-label-gemini' : 'ai-label-claude';
-  const labelText = ai.source === 'gemini' ? '✦ Gemini' : '● Claude';
-  return `<div class="ai-section"><div class="ai-label ${labelClass}">${labelText}</div><p class="ai-summary">${esc(ai.summary)}</p></div>`;
-}
-
-function buildSavedDictHtml(dict, hasAi) {
-  if (!dict || !dict.meanings || dict.meanings.length === 0) return '';
-  let meaningsHtml = '';
-  for (const meaning of dict.meanings) {
-    let defsHtml = '';
-    for (const def of meaning.definitions) {
-      defsHtml += `<li class="def-item">${esc(def.definition)}</li>`;
-      if (def.example) defsHtml += `<p class="def-example">"${esc(def.example)}"</p>`;
-    }
-    meaningsHtml += `<div class="meaning"><span class="pos">${esc(meaning.partOfSpeech)}</span><ol class="def-list">${defsHtml}</ol></div>`;
-  }
-  return `<div class="dict-section">${hasAi ? '<div class="dict-label">Definitions</div>' : ''}${meaningsHtml}</div>`;
-}
-
-function buildSavedCard(entry, expanded = false) {
-  const phoneticHtml = entry.dictionary?.phonetic ? `<span class="word-phonetic">${esc(entry.dictionary.phonetic)}</span>` : '';
-  const bodyContent = buildSavedAiHtml(entry.ai) + buildSavedDictHtml(entry.dictionary, !!entry.ai);
-  const q = encodeURIComponent(entry.text);
-  return `
-    <div class="word-card${expanded ? ' expanded' : ''}" data-text="${esc(entry.text)}">
-      <div class="word-card-header">
-        <span class="word-title">${esc(entry.text)}</span>
-        ${phoneticHtml}
-        <span class="word-date">${formatDate(entry.savedAt)}</span>
-        <span class="word-expand">▼</span>
-      </div>
-      <div class="word-card-body">
-        ${bodyContent || '<p style="color:#999;font-size:14px;">No summary or definitions saved.</p>'}
-        <div class="card-footer">
-          <div class="card-actions">
-            <a class="card-btn" href="https://en.wikipedia.org/wiki/Special:Search?search=${q}" target="_blank">Wikipedia</a>
-            <a class="card-btn card-btn-google" href="https://www.google.com/search?q=${q}" target="_blank">Google</a>
-          </div>
-          <button class="word-delete">Remove</button>
-        </div>
-      </div>
     </div>
   `;
 }
@@ -562,144 +696,65 @@ function buildSavedCard(entry, expanded = false) {
 // ── Stories ──────────────────────────────────────────────────────────────────
 
 const STORIES = {
-  // ── Popup ──
+  // Popup
   'popup-dict': {
     title: 'Popup · Dictionary mode (default)',
-    desc: 'No API key entered. Dictionary-only mode is selected — no API key sections visible.',
-    type: 'iframe',
-    src: 'popup/popup.html',
-    notes: 'Initial install state. Settings load from <code>chrome.storage.sync</code> via the service worker.',
-    iframeSize: { width: 380, height: 540 }
+    desc: 'Initial install state. Dictionary-only mode selected — no API key sections visible.',
+    type: 'popup',
+    state: { provider: 'dictionary', enabled: true }
   },
   'popup-gemini-empty': {
     title: 'Popup · Gemini selected, no key',
-    desc: 'User picked Gemini but did not enter a key. Saving will trigger an error toast.',
-    type: 'iframe-popup-state',
-    state: { provider: 'gemini', enabled: true, geminiApiKey: '', claudeApiKey: '' }
+    desc: 'User picked Gemini but did not enter a key.',
+    type: 'popup',
+    state: { provider: 'gemini', enabled: true }
   },
   'popup-gemini-key': {
     title: 'Popup · Gemini selected, key entered',
     desc: 'Key is masked by default; eye icon toggles visibility.',
-    type: 'iframe-popup-state',
-    state: { provider: 'gemini', enabled: true, geminiApiKey: 'AIzaSyExample-fake-key-for-preview-only', claudeApiKey: '' }
+    type: 'popup',
+    state: { provider: 'gemini', enabled: true, geminiApiKey: 'AIzaSyExample-fake-key-for-preview-only' }
   },
   'popup-claude-key': {
     title: 'Popup · Claude selected, key entered',
     desc: '',
-    type: 'iframe-popup-state',
-    state: { provider: 'claude', enabled: true, geminiApiKey: '', claudeApiKey: 'sk-ant-fake-key-for-preview-only-dont-use' }
+    type: 'popup',
+    state: { provider: 'claude', enabled: true, claudeApiKey: 'sk-ant-fake-key-for-preview-only-dont-use' }
   },
   'popup-disabled': {
     title: 'Popup · Disabled',
     desc: 'User toggled the extension off. Settings are kept; no tooltip will appear.',
-    type: 'iframe-popup-state',
-    state: { provider: 'dictionary', enabled: false, geminiApiKey: '', claudeApiKey: '' }
+    type: 'popup',
+    state: { provider: 'dictionary', enabled: false }
   },
   'popup-saved-toast': {
-    title: 'Popup · Saved! toast',
+    title: 'Popup · "Saved!" toast',
     desc: 'Status message after pressing Save Settings.',
-    type: 'iframe-popup-state',
-    state: { provider: 'dictionary', enabled: true, geminiApiKey: '', claudeApiKey: '' },
-    after: (frame) => {
-      const doc = frame.contentDocument;
-      const el = doc.getElementById('status');
-      el.textContent = 'Settings saved!';
-      el.style.color = '#34a853';
-      el.classList.add('show');
-    }
+    type: 'popup',
+    state: { provider: 'dictionary', enabled: true, toast: { text: 'Settings saved!', color: '#34a853' }}
   },
   'popup-error-toast': {
     title: 'Popup · Validation error',
     desc: 'Triggered when an AI provider is selected without a key.',
-    type: 'iframe-popup-state',
-    state: { provider: 'gemini', enabled: true, geminiApiKey: '', claudeApiKey: '' },
-    after: (frame) => {
-      const doc = frame.contentDocument;
-      const el = doc.getElementById('status');
-      el.textContent = 'Please enter a Gemini API key';
-      el.style.color = '#d93025';
-      el.classList.add('show');
-    }
+    type: 'popup',
+    state: { provider: 'gemini', enabled: true, toast: { text: 'Please enter a Gemini API key', color: '#d93025' }}
   },
 
-  // ── Saved page ──
-  'saved-empty': {
-    title: 'Saved Words · Empty state',
-    desc: 'No words saved yet — initial state shown to first-time users.',
-    type: 'iframe-saved-state',
-    words: []
-  },
-  'saved-collapsed': {
-    title: 'Saved Words · Cards collapsed',
-    desc: 'Default list view. Click a card to expand and reveal AI summary + definitions.',
-    type: 'iframe-saved-state',
-    words: SAVED_FIXTURES
-  },
-  'saved-expanded': {
-    title: 'Saved Words · Card expanded',
-    desc: 'First card open showing Gemini summary + dictionary definitions + actions.',
-    type: 'iframe-saved-state',
-    words: SAVED_FIXTURES,
-    expand: 'serendipity'
-  },
-  'saved-dict-only': {
-    title: 'Saved Words · Dict-only entry expanded',
-    desc: 'Word saved while in dictionary-only mode (no AI summary).',
-    type: 'iframe-saved-state',
-    words: SAVED_FIXTURES,
-    expand: 'limerence'
-  },
-  'saved-no-results': {
-    title: 'Saved Words · Search · no matches',
-    desc: 'List has words, but the search query matches none.',
-    type: 'iframe-saved-state',
-    words: SAVED_FIXTURES,
-    search: 'zzzzz'
-  },
+  // Saved
+  'saved-empty':       { title: 'Saved Words · Empty state',         desc: 'No words saved yet.',                          type: 'saved', state: { words: [] } },
+  'saved-collapsed':   { title: 'Saved Words · Cards collapsed',     desc: 'Default list view — click a card to expand.',  type: 'saved', state: { words: SAVED_FIXTURES } },
+  'saved-expanded':    { title: 'Saved Words · Card expanded',       desc: 'First card open showing Gemini summary + dictionary.', type: 'saved', state: { words: SAVED_FIXTURES, expand: 'serendipity' } },
+  'saved-dict-only':   { title: 'Saved Words · Dict-only entry',     desc: 'Word saved in dictionary-only mode.',          type: 'saved', state: { words: SAVED_FIXTURES, expand: 'limerence' } },
+  'saved-no-results':  { title: 'Saved Words · Search · no matches', desc: 'List has words but search query matches none.', type: 'saved', state: { words: SAVED_FIXTURES, search: 'zzzzz' } },
 
-  // ── Tooltip ──
-  'tooltip-loading': {
-    title: 'Tooltip · Loading shimmer',
-    desc: 'Shown immediately after double-click while AI + dictionary requests are in flight.',
-    type: 'tooltip',
-    render: () => buildLoading(FIX.word)
-  },
-  'tooltip-dict': {
-    title: 'Tooltip · Dictionary only',
-    desc: 'No AI provider configured. Shows definitions and a hint to add a key.',
-    type: 'tooltip',
-    render: () => buildResult(FIX.word, { success: true, dictionary: FIX.dict })
-  },
-  'tooltip-ai-dict': {
-    title: 'Tooltip · AI summary + dictionary',
-    desc: 'Most common state when an AI provider is configured.',
-    type: 'tooltip',
-    render: () => buildResult(FIX.word, { success: true, ai: FIX.ai_gemini, dictionary: FIX.dict })
-  },
-  'tooltip-ai-error': {
-    title: 'Tooltip · AI error + dictionary',
-    desc: 'AI request failed (e.g., bad key) but dictionary still loaded.',
-    type: 'tooltip',
-    render: () => buildResult(FIX.word, { success: true, aiError: 'Invalid API key. Check your settings.', dictionary: FIX.dict })
-  },
-  'tooltip-no-result': {
-    title: 'Tooltip · No result',
-    desc: 'Word not found in dictionary and no AI summary available.',
-    type: 'tooltip',
-    render: () => buildResult('xyzzy', { success: false })
-  },
-  'tooltip-saved': {
-    title: 'Tooltip · Saved (filled bookmark)',
-    desc: 'After the user clicks the bookmark to save the word.',
-    type: 'tooltip',
-    render: () => buildResult(FIX.word, { success: true, ai: FIX.ai_claude, dictionary: FIX.dict }, { saved: true })
-  },
-  'tooltip-long': {
-    title: 'Tooltip · Long content (scrolling)',
-    desc: 'Body has max-height 320px and scrolls. Tests dense content overflow.',
-    type: 'tooltip',
-    render: () => buildResult(FIX.word, { success: true, ai: FIX.ai_gemini, dictionary: FIX.longDict })
-  }
+  // Tooltip
+  'tooltip-loading':   { title: 'Tooltip · Loading shimmer',          desc: 'Shown immediately after double-click while AI + dictionary requests are in flight.', type: 'tooltip', render: () => buildLoading(FIX.word) },
+  'tooltip-dict':      { title: 'Tooltip · Dictionary only',          desc: 'No AI provider configured.',                  type: 'tooltip', render: () => buildResult(FIX.word, { success: true, dictionary: FIX.dict }) },
+  'tooltip-ai-dict':   { title: 'Tooltip · AI summary + dictionary',  desc: 'Most common state when AI is configured.',    type: 'tooltip', render: () => buildResult(FIX.word, { success: true, ai: FIX.ai_gemini, dictionary: FIX.dict }) },
+  'tooltip-ai-error':  { title: 'Tooltip · AI error + dictionary',    desc: 'AI request failed but dictionary still loaded.', type: 'tooltip', render: () => buildResult(FIX.word, { success: true, aiError: 'Invalid API key. Check your settings.', dictionary: FIX.dict }) },
+  'tooltip-no-result': { title: 'Tooltip · No result',                desc: 'Word not found and no AI summary available.', type: 'tooltip', render: () => buildResult('xyzzy', { success: false }) },
+  'tooltip-saved':     { title: 'Tooltip · Saved (filled bookmark)',  desc: 'After the user clicks the bookmark to save the word.', type: 'tooltip', render: () => buildResult(FIX.word, { success: true, ai: FIX.ai_claude, dictionary: FIX.dict }, { saved: true }) },
+  'tooltip-long':      { title: 'Tooltip · Long content (scrolling)', desc: 'Body has max-height 320px and scrolls.',      type: 'tooltip', render: () => buildResult(FIX.word, { success: true, ai: FIX.ai_gemini, dictionary: FIX.longDict }) }
 };
 
 // ── State machine ────────────────────────────────────────────────────────────
@@ -721,7 +776,7 @@ function renderStory(id) {
 
   document.getElementById('title').textContent = story.title;
   document.getElementById('desc').textContent = story.desc || '';
-  document.getElementById('meta').innerHTML = story.notes || '';
+  document.getElementById('meta').innerHTML = '';
 
   const stage = document.getElementById('stage');
   const toolbar = document.getElementById('toolbar');
@@ -729,7 +784,6 @@ function renderStory(id) {
   stage.className = 'stage';
   stage.innerHTML = '';
 
-  // Tooltip stories support light/dark toolbar
   if (story.type === 'tooltip') {
     stage.classList.add('tooltip-stage');
     if (currentDark) stage.classList.add('dark');
@@ -751,121 +805,27 @@ function renderStory(id) {
     return;
   }
 
-  // Plain iframe (no state injection)
-  if (story.type === 'iframe') {
-    const f = document.createElement('iframe');
-    f.className = 'frame';
-    f.src = story.src;
-    f.style.width = (story.iframeSize?.width || 380) + 'px';
-    f.style.height = (story.iframeSize?.height || 540) + 'px';
-    stage.appendChild(f);
+  if (story.type === 'popup') {
+    const wrap = document.createElement('div');
+    wrap.className = 'frame-wrap';
+    wrap.innerHTML = buildPopup(story.state);
+    stage.appendChild(wrap);
     return;
   }
 
-  // Popup with mocked chrome state
-  if (story.type === 'iframe-popup-state') {
-    const f = document.createElement('iframe');
-    f.className = 'frame';
-    f.src = 'popup/popup.html';
-    f.style.width = '380px';
-    f.style.height = '540px';
-    f.onload = () => {
-      injectChromeMock(f.contentWindow, story.state);
-      // Re-run popup.js logic by reloading after injecting
-      // Simpler approach: directly populate the form once script has run
-      requestAnimationFrame(() => populatePopup(f.contentDocument, story.state));
-      requestAnimationFrame(() => { if (story.after) story.after(f); });
-    };
-    stage.appendChild(f);
-    return;
-  }
-
-  // Saved-words page with mocked data
-  if (story.type === 'iframe-saved-state') {
-    const f = document.createElement('iframe');
-    f.className = 'frame';
-    f.src = 'saved/saved.html';
-    f.style.width = '720px';
-    f.style.height = '600px';
-    f.onload = () => {
-      injectChromeMock(f.contentWindow, null, story.words);
-      requestAnimationFrame(() => populateSaved(f.contentDocument, story.words, story.expand, story.search));
-    };
-    stage.appendChild(f);
+  if (story.type === 'saved') {
+    const wrap = document.createElement('div');
+    wrap.className = 'frame-wrap';
+    wrap.innerHTML = buildSavedPage(story.state);
+    stage.appendChild(wrap);
     return;
   }
 }
-
-// Mock chrome.* APIs inside an iframe so its scripts don't crash on load.
-function injectChromeMock(win, settings, savedWords) {
-  win.chrome = {
-    runtime: {
-      sendMessage: (msg, cb) => {
-        if (msg.type === 'GET_SETTINGS') cb && cb(settings || { enabled: true, provider: 'dictionary' });
-        else if (msg.type === 'GET_SAVED_WORDS') cb && cb({ words: savedWords || [] });
-        else cb && cb({});
-      },
-      getURL: (p) => p
-    },
-    tabs: { create: () => {} },
-    storage: { sync: { get: (k, cb) => cb({}), set: () => {} } }
-  };
-}
-
-// Even with the chrome mock, the popup.js script ran before we injected.
-// Manually populate the form to reflect the requested state.
-function populatePopup(doc, s) {
-  doc.getElementById('enabled').checked = s.enabled !== false;
-  const radio = doc.querySelector(`input[name="provider"][value="${s.provider}"]`);
-  if (radio) {
-    radio.checked = true;
-    radio.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-  doc.getElementById('gemini-key').value = s.geminiApiKey || '';
-  doc.getElementById('claude-key').value = s.claudeApiKey || '';
-}
-
-function populateSaved(doc, words, expandText, searchValue) {
-  const listEl = doc.getElementById('list');
-  const emptyEl = doc.getElementById('empty');
-  const noResultsEl = doc.getElementById('no-results');
-  const countEl = doc.getElementById('count');
-  const searchEl = doc.getElementById('search');
-
-  emptyEl.style.display = 'none';
-  noResultsEl.style.display = 'none';
-
-  if (searchValue) searchEl.value = searchValue;
-
-  if (!words || words.length === 0) {
-    listEl.innerHTML = '';
-    emptyEl.style.display = '';
-    countEl.textContent = '';
-    return;
-  }
-
-  countEl.textContent = `${words.length} word${words.length !== 1 ? 's' : ''}`;
-
-  const filtered = searchValue
-    ? words.filter((w) => w.text.toLowerCase().includes(searchValue.toLowerCase()))
-    : words;
-
-  if (filtered.length === 0) {
-    listEl.innerHTML = '';
-    noResultsEl.style.display = '';
-    return;
-  }
-
-  listEl.innerHTML = filtered.map((w) => buildSavedCard(w, w.text === expandText)).join('');
-}
-
-// ── Wire up nav ──────────────────────────────────────────────────────────────
 
 document.querySelectorAll('.nav-item').forEach((el) => {
   el.addEventListener('click', () => renderStory(el.dataset.id));
 });
 
-// Default story: tooltip · ai+dict (the showcase shot)
 renderStory('tooltip-ai-dict');
 </script>
 
