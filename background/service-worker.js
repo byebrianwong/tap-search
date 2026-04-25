@@ -2,16 +2,16 @@
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
-    id: 'instant-search-lookup',
-    title: 'Instant Search: "%s"',
+    id: 'tap-search-lookup',
+    title: 'Tap Search: "%s"',
     contexts: ['selection']
   });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === 'instant-search-lookup' && info.selectionText && tab?.id) {
+  if (info.menuItemId === 'tap-search-lookup' && info.selectionText && tab?.id) {
     chrome.tabs.sendMessage(tab.id, {
-      type: 'INSTANT_SEARCH_CONTEXT_MENU',
+      type: 'TAP_SEARCH_CONTEXT_MENU',
       text: info.selectionText.trim()
     });
   }
@@ -236,7 +236,7 @@ async function isWordSaved(text) {
 // ── Message router ──────────────────────────────────────────────────────────
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'INSTANT_SEARCH_LOOKUP') {
+  if (message.type === 'TAP_SEARCH_LOOKUP') {
     handleLookup(message.word).then(sendResponse);
     return true;
   }

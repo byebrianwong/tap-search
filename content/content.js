@@ -620,7 +620,7 @@
   function createTooltip(word, rect) {
     removeTooltip();
 
-    const host = document.createElement('instant-search-tooltip');
+    const host = document.createElement('tap-search-tooltip');
     host.style.position = 'absolute';
     host.style.zIndex = '2147483647';
 
@@ -657,7 +657,7 @@
     });
 
     chrome.runtime.sendMessage(
-      { type: 'INSTANT_SEARCH_LOOKUP', word },
+      { type: 'TAP_SEARCH_LOOKUP', word },
       (result) => {
         if (!currentHost || currentHost !== host) return;
         currentResult = result;
@@ -746,7 +746,7 @@
   // ── Context menu handler ───────────────────────────────────────────────────
 
   chrome.runtime.onMessage.addListener((message) => {
-    if (message.type !== 'INSTANT_SEARCH_CONTEXT_MENU') return;
+    if (message.type !== 'TAP_SEARCH_CONTEXT_MENU') return;
 
     let text = (message.text || '').trim();
     if (text.length < 1 || text.length > 200) return;

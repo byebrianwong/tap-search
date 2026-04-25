@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Instant Search",
+  "name": "Tap Search",
   "version": "1.0.0",
   "description": "Double-click any word for instant AI-powered summaries, Wikipedia search, and more.",
   "permissions": ["storage", "contextMenus"],

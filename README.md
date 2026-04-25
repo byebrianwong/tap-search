@@ -1,4 +1,4 @@
-# Instant Search
+# Tap Search
 
 A Chrome extension that shows AI-powered summaries and dictionary definitions when you double-click any word on any webpage.
 
@@ -18,7 +18,7 @@ Since this extension isn't on the Chrome Web Store yet, you'll need to load it m
 1. **Clone the repo**
 
    ```
-   git clone https://github.com/byebrianwong/instant-search.git
+   git clone https://github.com/byebrianwong/tap-search.git
    ```
 
 2. **Open Chrome's extension page**
@@ -31,11 +31,11 @@ Since this extension isn't on the Chrome Web Store yet, you'll need to load it m
 
 4. **Load the extension**
 
-   Click **"Load unpacked"** and select the `instant-search` folder you just cloned.
+   Click **"Load unpacked"** and select the `tap-search` folder you just cloned.
 
 5. **Pin it (optional)**
 
-   Click the puzzle-piece icon in Chrome's toolbar and pin **Instant Search** for easy access to settings.
+   Click the puzzle-piece icon in Chrome's toolbar and pin **Tap Search** for easy access to settings.
 
 ## Setup
 
@@ -48,7 +48,7 @@ To enable AI summaries, click the extension icon and configure a provider:
 | **Gemini** | [Google AI Studio](https://aistudio.google.com/apikey) | Free tier available |
 | **Claude** | [Anthropic Console](https://console.anthropic.com/) | Pay-per-use |
 
-1. Click the Instant Search icon in the toolbar.
+1. Click the Tap Search icon in the toolbar.
 2. Select **Gemini** or **Claude**.
 3. Paste your API key and click **Save Settings**.
 
@@ -64,7 +64,7 @@ To enable AI summaries, click the extension icon and configure a provider:
 ## Project structure
 
 ```
-instant-search/
+tap-search/
   manifest.json            # Chrome extension manifest (MV3)
   background/
     service-worker.js      # API calls to Gemini, Claude, and Dictionary
@@ -87,9 +87,9 @@ This is a Chrome Manifest V3 extension with no build step — all source files a
 
 ### Message flow
 
-1. `content/content.js` runs on every page. On double-click it extracts the selected word and sends a `{ type: 'INSTANT_SEARCH_LOOKUP', word }` message to the background service worker via `chrome.runtime.sendMessage`.
+1. `content/content.js` runs on every page. On double-click it extracts the selected word and sends a `{ type: 'TAP_SEARCH_LOOKUP', word }` message to the background service worker via `chrome.runtime.sendMessage`.
 2. `background/service-worker.js` receives the message, fires AI and dictionary lookups **in parallel** (`Promise.all`), and returns the combined result.
-3. The content script renders the result into a Shadow DOM tooltip (`<instant-search-tooltip>`) so styles are fully isolated from the host page.
+3. The content script renders the result into a Shadow DOM tooltip (`<tap-search-tooltip>`) so styles are fully isolated from the host page.
 
 ### Settings / storage
 
@@ -115,12 +115,12 @@ The popup reads/writes settings via messages (`GET_SETTINGS` / `SAVE_SETTINGS`) 
 - **No build step, no dependencies.** Everything is vanilla JS. No npm, no bundler.
 - **Shadow DOM isolation.** The tooltip uses a closed Shadow DOM so host-page CSS cannot leak in.
 - **Content script is an IIFE** to avoid polluting the page's global scope.
-- The tooltip custom element tag is `<instant-search-tooltip>`.
+- The tooltip custom element tag is `<tap-search-tooltip>`.
 - Word validation uses the regex `/^[\p{L}'-]+$/u` — letters, apostrophes, and hyphens only, 2–50 chars.
 
 ### Making changes
 
-After editing any file, go to `chrome://extensions` and click the reload button on the Instant Search card (or press Ctrl+R on the extensions page). Content script changes require a page refresh on the target tab as well.
+After editing any file, go to `chrome://extensions` and click the reload button on the Tap Search card (or press Ctrl+R on the extensions page). Content script changes require a page refresh on the target tab as well.
 
 ## License
 
