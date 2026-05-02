@@ -98,6 +98,24 @@ body {
 .toolbar-status.ok { color: #34a853; }
 .toolbar-status.err { color: #d93025; }
 
+.toolbar-divider {
+  width: 1px;
+  height: 18px;
+  background: #e2e2e2;
+  margin: 0 4px;
+}
+
+.toolbar-btn-drive {
+  background: #f0f6ff;
+  border-color: #c5d8f8;
+  color: #1a73e8;
+}
+
+.toolbar-btn-drive:hover {
+  background: #e0ebff;
+  border-color: #a8c4f0;
+}
+
 /* ── Word list ── */
 .word-list {
   display: flex;
@@ -430,4 +448,7 @@ body {
   .toolbar-btn { background: #2a2a2d; border-color: #444; color: #e0e0e0; }
   .toolbar-btn:hover { background: #34343a; border-color: #666; }
   .toolbar-status { color: #888; }
+  .toolbar-divider { background: #444; }
+  .toolbar-btn-drive { background: #1e3a5f; border-color: #2962ff55; color: #8ab4f8; }
+  .toolbar-btn-drive:hover { background: #264a7a; border-color: #3a6bb8; }
 }

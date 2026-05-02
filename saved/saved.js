@@ -9,6 +9,9 @@
   const exportBtn = document.getElementById('export-btn');
   const importBtn = document.getElementById('import-btn');
   const importFile = document.getElementById('import-file');
+  const driveBackupBtn = document.getElementById('drive-backup-btn');
+  const driveRestoreBtn = document.getElementById('drive-restore-btn');
+  const driveDivider = document.getElementById('drive-divider');
   const toolbarStatus = document.getElementById('toolbar-status');
 
   let allWords = [];
@@ -252,6 +255,58 @@
     const file = e.target.files?.[0];
     importFromFile(file);
     e.target.value = ''; // allow re-importing the same filename
+  });
+
+  // ── Drive sync (only shown when service worker reports it as available) ──
+
+  function setDriveBusy(busy) {
+    driveBackupBtn.disabled = busy;
+    driveRestoreBtn.disabled = busy;
+  }
+
+  function driveBackup() {
+    setDriveBusy(true);
+    setStatus('Connecting to Google Drive…', '');
+    chrome.runtime.sendMessage({ type: 'DRIVE_BACKUP' }, (res) => {
+      setDriveBusy(false);
+      if (!res || res.error) {
+        setStatus(res?.error || 'Drive backup failed', 'err');
+        return;
+      }
+      const action = res.action === 'updated' ? 'Updated' : 'Saved';
+      setStatus(`${action} ${res.uploaded} word${res.uploaded !== 1 ? 's' : ''} to Drive`, 'ok');
+    });
+  }
+
+  function driveRestore() {
+    setDriveBusy(true);
+    setStatus('Reading from Google Drive…', '');
+    chrome.runtime.sendMessage({ type: 'DRIVE_RESTORE' }, (res) => {
+      setDriveBusy(false);
+      if (!res || res.error) {
+        setStatus(res?.error || 'Drive restore failed', 'err');
+        return;
+      }
+      const parts = [];
+      if (res.added) parts.push(`${res.added} added`);
+      if (res.updated) parts.push(`${res.updated} updated`);
+      if (res.skipped) parts.push(`${res.skipped} skipped`);
+      setStatus(parts.length ? `From Drive: ${parts.join(', ')}` : 'Drive backup matches local list', 'ok');
+      loadWords();
+    });
+  }
+
+  driveBackupBtn.addEventListener('click', driveBackup);
+  driveRestoreBtn.addEventListener('click', driveRestore);
+
+  // Probe whether Drive sync is enabled in this build, and reveal the buttons
+  // only if it is.
+  chrome.runtime.sendMessage({ type: 'DRIVE_SYNC_AVAILABLE' }, (res) => {
+    if (res?.available) {
+      driveDivider.hidden = false;
+      driveBackupBtn.hidden = false;
+      driveRestoreBtn.hidden = false;
+    }
   });
 
   // ── Init ──
