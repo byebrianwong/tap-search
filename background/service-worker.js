@@ -233,6 +233,65 @@ async function isWordSaved(text) {
   return saved.some((w) => w.text === text);
 }
 
+// Bulk import: validates incoming entries and merges/replaces.
+// Returns { added, updated, skipped, total }.
+async function importWords(incoming, mode = 'merge') {
+  if (!Array.isArray(incoming)) {
+    return { error: 'Invalid file: expected an array of words.' };
+  }
+
+  // Sanitize & validate. Only `text` (string, 1-100 chars) is required.
+  const clean = [];
+  let skipped = 0;
+  for (const w of incoming) {
+    if (!w || typeof w.text !== 'string') { skipped++; continue; }
+    const text = w.text.trim();
+    if (!text || text.length > 100) { skipped++; continue; }
+    clean.push({
+      text,
+      savedAt: typeof w.savedAt === 'number' ? w.savedAt : Date.now(),
+      ai: w.ai && typeof w.ai === 'object' ? w.ai : null,
+      dictionary: w.dictionary && typeof w.dictionary === 'object' ? w.dictionary : null
+    });
+  }
+
+  let merged;
+  let added = 0;
+  let updated = 0;
+
+  if (mode === 'replace') {
+    // Dedup within incoming (newer savedAt wins) and replace storage entirely.
+    const map = new Map();
+    for (const w of clean) {
+      const prev = map.get(w.text);
+      if (!prev || (w.savedAt || 0) > (prev.savedAt || 0)) map.set(w.text, w);
+    }
+    merged = Array.from(map.values()).sort((a, b) => (b.savedAt || 0) - (a.savedAt || 0));
+    added = merged.length;
+  } else {
+    // Merge with existing — incoming with newer savedAt wins per text.
+    const existing = await getSavedWords();
+    const map = new Map(existing.map((w) => [w.text, w]));
+    for (const w of clean) {
+      const prev = map.get(w.text);
+      if (!prev) {
+        map.set(w.text, w);
+        added++;
+      } else if ((w.savedAt || 0) > (prev.savedAt || 0)) {
+        map.set(w.text, w);
+        updated++;
+      }
+    }
+    merged = Array.from(map.values()).sort((a, b) => (b.savedAt || 0) - (a.savedAt || 0));
+  }
+
+  await new Promise((resolve) => {
+    chrome.storage.local.set({ savedWords: merged }, resolve);
+  });
+
+  return { success: true, added, updated, skipped, total: merged.length };
+}
+
 // ── Message router ──────────────────────────────────────────────────────────
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -270,6 +329,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.type === 'GET_SAVED_WORDS') {
     getSavedWords().then((words) => sendResponse({ words }));
+    return true;
+  }
+
+  if (message.type === 'IMPORT_WORDS') {
+    importWords(message.words, message.mode).then(sendResponse);
     return true;
   }
 

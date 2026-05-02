@@ -6,6 +6,10 @@
   const noResultsEl = document.getElementById('no-results');
   const countEl = document.getElementById('count');
   const searchEl = document.getElementById('search');
+  const exportBtn = document.getElementById('export-btn');
+  const importBtn = document.getElementById('import-btn');
+  const importFile = document.getElementById('import-file');
+  const toolbarStatus = document.getElementById('toolbar-status');
 
   let allWords = [];
 
@@ -156,6 +160,98 @@
 
   searchEl.addEventListener('input', () => {
     render(allWords);
+  });
+
+  // ── Export / Import ──
+
+  function setStatus(text, kind) {
+    toolbarStatus.textContent = text;
+    toolbarStatus.className = 'toolbar-status' + (kind ? ' ' + kind : '');
+    if (text) {
+      clearTimeout(setStatus._t);
+      setStatus._t = setTimeout(() => {
+        toolbarStatus.textContent = '';
+        toolbarStatus.className = 'toolbar-status';
+      }, 4000);
+    }
+  }
+
+  function exportWords() {
+    if (!allWords.length) {
+      setStatus('Nothing to export', 'err');
+      return;
+    }
+    const payload = {
+      app: 'tap-search',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      words: allWords
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const date = new Date().toISOString().slice(0, 10);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tap-search-words-${date}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setStatus(`Exported ${allWords.length} word${allWords.length !== 1 ? 's' : ''}`, 'ok');
+  }
+
+  function importFromFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onerror = () => setStatus('Could not read file', 'err');
+    reader.onload = () => {
+      let parsed;
+      try {
+        parsed = JSON.parse(reader.result);
+      } catch (e) {
+        setStatus('File is not valid JSON', 'err');
+        return;
+      }
+      // Accept either { words: [...] } (Tap Search export) or a bare array.
+      const words = Array.isArray(parsed) ? parsed : parsed?.words;
+      if (!Array.isArray(words)) {
+        setStatus('Unrecognized file format', 'err');
+        return;
+      }
+
+      const mode = confirm(
+        `Import ${words.length} word${words.length !== 1 ? 's' : ''}?\n\n` +
+        `OK = merge with your existing list (newer entries replace older).\n` +
+        `Cancel = stop. (To replace everything, clear your list first, then import.)`
+      ) ? 'merge' : null;
+
+      if (!mode) {
+        setStatus('Import cancelled', '');
+        return;
+      }
+
+      chrome.runtime.sendMessage({ type: 'IMPORT_WORDS', words, mode }, (res) => {
+        if (!res || res.error) {
+          setStatus(res?.error || 'Import failed', 'err');
+          return;
+        }
+        const parts = [];
+        if (res.added) parts.push(`${res.added} added`);
+        if (res.updated) parts.push(`${res.updated} updated`);
+        if (res.skipped) parts.push(`${res.skipped} skipped`);
+        setStatus(parts.length ? parts.join(', ') : 'No changes', 'ok');
+        loadWords();
+      });
+    };
+    reader.readAsText(file);
+  }
+
+  exportBtn.addEventListener('click', exportWords);
+  importBtn.addEventListener('click', () => importFile.click());
+  importFile.addEventListener('change', (e) => {
+    const file = e.target.files?.[0];
+    importFromFile(file);
+    e.target.value = ''; // allow re-importing the same filename
   });
 
   // ── Init ──

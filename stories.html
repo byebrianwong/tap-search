@@ -229,6 +229,12 @@
   .saved-preview .empty-icon { color: #ddd; margin-bottom: 16px; }
   .saved-preview .empty-title { font-size: 18px; font-weight: 600; color: #666; margin-bottom: 6px; }
   .saved-preview .empty-subtitle { font-size: 14px; color: #999; max-width: 340px; margin: 0 auto; }
+  .saved-preview .toolbar-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .saved-preview .toolbar-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 7px; border: 1px solid #ddd; background: #fff; color: #333; font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: inherit; }
+  .saved-preview .toolbar-btn:hover { background: #f5f7fa; border-color: #ccc; }
+  .saved-preview .toolbar-status { font-size: 12px; color: #888; margin-left: 4px; }
+  .saved-preview .toolbar-status.ok { color: #34a853; }
+  .saved-preview .toolbar-status.err { color: #d93025; }
 
   /* ──────────────── Tooltip styles (scoped) ──────────────── */
   .tap-search-tooltip {
@@ -320,6 +326,9 @@
     <div class="nav-item" data-id="saved-expanded">Card · expanded (AI + dict)</div>
     <div class="nav-item" data-id="saved-dict-only">Card · dict only</div>
     <div class="nav-item" data-id="saved-no-results">Search · no matches</div>
+    <div class="nav-item" data-id="saved-export-ok">After export</div>
+    <div class="nav-item" data-id="saved-import-ok">After import</div>
+    <div class="nav-item" data-id="saved-import-err">Import error</div>
   </div>
 
   <div class="group">
@@ -548,7 +557,10 @@ function buildSavedCard(entry, expanded) {
   `;
 }
 
-function buildSavedPage({ words = [], expand, search }) {
+const ICON_EXPORT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const ICON_IMPORT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`;
+
+function buildSavedPage({ words = [], expand, search, toolbar }) {
   const filtered = search
     ? words.filter((w) => w.text.toLowerCase().includes(search.toLowerCase()))
     : words;
@@ -588,6 +600,11 @@ function buildSavedPage({ words = [], expand, search }) {
           </div>
           <div class="search-row">
             <input type="text" placeholder="Search saved words..." value="${esc(searchVal)}">
+          </div>
+          <div class="toolbar-row">
+            <button class="toolbar-btn">${ICON_EXPORT} Export</button>
+            <button class="toolbar-btn">${ICON_IMPORT} Import</button>
+            ${toolbar?.text ? `<span class="toolbar-status ${toolbar.kind || ''}">${esc(toolbar.text)}</span>` : '<span class="toolbar-status"></span>'}
           </div>
         </header>
         ${body}
@@ -746,6 +763,9 @@ const STORIES = {
   'saved-expanded':    { title: 'Saved Words · Card expanded',       desc: 'First card open showing Gemini summary + dictionary.', type: 'saved', state: { words: SAVED_FIXTURES, expand: 'serendipity' } },
   'saved-dict-only':   { title: 'Saved Words · Dict-only entry',     desc: 'Word saved in dictionary-only mode.',          type: 'saved', state: { words: SAVED_FIXTURES, expand: 'limerence' } },
   'saved-no-results':  { title: 'Saved Words · Search · no matches', desc: 'List has words but search query matches none.', type: 'saved', state: { words: SAVED_FIXTURES, search: 'zzzzz' } },
+  'saved-export-ok':   { title: 'Saved Words · After export',        desc: 'Status message after a successful export.',     type: 'saved', state: { words: SAVED_FIXTURES, toolbar: { text: 'Exported 3 words', kind: 'ok' } } },
+  'saved-import-ok':   { title: 'Saved Words · After import',        desc: 'Status message after a successful merge import.', type: 'saved', state: { words: SAVED_FIXTURES, toolbar: { text: '5 added, 2 updated', kind: 'ok' } } },
+  'saved-import-err':  { title: 'Saved Words · Import error',        desc: 'Shown when the file is not valid JSON.',        type: 'saved', state: { words: SAVED_FIXTURES, toolbar: { text: 'File is not valid JSON', kind: 'err' } } },
 
   // Tooltip
   'tooltip-loading':   { title: 'Tooltip · Loading shimmer',          desc: 'Shown immediately after double-click while AI + dictionary requests are in flight.', type: 'tooltip', render: () => buildLoading(FIX.word) },

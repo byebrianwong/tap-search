@@ -58,6 +58,46 @@ body {
   box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
 }
 
+/* ── Toolbar (export/import) ── */
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #333;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 120ms, border-color 120ms;
+}
+
+.toolbar-btn:hover {
+  background: #f5f7fa;
+  border-color: #ccc;
+}
+
+.toolbar-status {
+  font-size: 12px;
+  color: #888;
+  min-height: 16px;
+  margin-left: 4px;
+  transition: color 200ms;
+}
+
+.toolbar-status.ok { color: #34a853; }
+.toolbar-status.err { color: #d93025; }
+
 /* ── Word list ── */
 .word-list {
   display: flex;
@@ -386,4 +426,8 @@ body {
   .empty-title { color: #888; }
   .empty-subtitle { color: #666; }
   .count { color: #666; }
+
+  .toolbar-btn { background: #2a2a2d; border-color: #444; color: #e0e0e0; }
+  .toolbar-btn:hover { background: #34343a; border-color: #666; }
+  .toolbar-status { color: #888; }
 }
